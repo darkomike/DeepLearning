@@ -1,11 +1,14 @@
 # DeepLearning
 
-This is a Python project for deep learning experiments using PyTorch. It includes implementations of both a simple fully connected neural network and a convolutional neural network, trained on the MNIST dataset for handwritten digit recognition.
+This is a Python project for deep learning experiments using PyTorch. It includes implementations of various neural network architectures (fully connected, convolutional, recurrent, GRU, and LSTM) trained on the MNIST dataset for handwritten digit recognition.
 
 ## Files
 
 - `simple_neural_network.py`: A simple fully connected neural network implementation with detailed comments explaining each line of code.
 - `simple_convolution_neural_network.py`: A convolutional neural network implementation with detailed comments explaining each line of code.
+- `simple_recurrent_neural_network.py`: A recurrent neural network (RNN) implementation with detailed comments explaining each line of code.
+- `simple_gated_recurrent_unit_neural_network.py`: A gated recurrent unit (GRU) neural network implementation with detailed comments explaining each line of code.
+- `simple_long_short_term_memory_neural_network.py`: A long short-term memory (LSTM) neural network implementation with detailed comments explaining each line of code.
 - `.gitignore`: Ignores the dataset folder to avoid committing large data files.
 - `README.md`: This file, providing project overview and instructions.
 
@@ -29,6 +32,30 @@ The CNN consists of:
 
 Trained using Adam optimizer and Cross-Entropy loss for 5 epochs with batch size 64.
 
+### Recurrent Neural Network (RNN)
+The RNN treats images as sequences:
+- Input: 28 time steps (rows), each with 28 features
+- RNN: 2 layers, 256 hidden units
+- Fully Connected: 256*28 → 10 neurons
+
+Trained using Adam optimizer and Cross-Entropy loss for 2 epochs with batch size 64.
+
+### Gated Recurrent Unit (GRU)
+Similar to RNN but with gating:
+- Input: 28 time steps, each with 28 features
+- GRU: 2 layers, 256 hidden units
+- Fully Connected: 256*28 → 10 neurons
+
+Trained using Adam optimizer and Cross-Entropy loss for 2 epochs with batch size 64.
+
+### Long Short-Term Memory (LSTM)
+Advanced RNN with memory cells:
+- Input: 28 time steps, each with 28 features
+- LSTM: 2 layers, 256 hidden units
+- Fully Connected: 256*28 → 10 neurons
+
+Trained using Adam optimizer and Cross-Entropy loss for 2 epochs with batch size 64.
+
 ## Requirements
 
 - Python 3.x
@@ -48,17 +75,16 @@ git clone https://github.com/darkomike/DeepLearning.git
 cd DeepLearning
 ```
 
-2. Run the fully connected neural network:
+2. Run any of the neural networks:
 ```bash
 python simple_neural_network.py
-```
-
-3. Run the convolutional neural network:
-```bash
 python simple_convolution_neural_network.py
+python simple_recurrent_neural_network.py
+python simple_gated_recurrent_unit_neural_network.py
+python simple_long_short_term_memory_neural_network.py
 ```
 
-Both scripts will:
+Each script will:
 - Download the MNIST dataset automatically
 - Train the respective model
 - Evaluate accuracy on training and test sets
@@ -85,6 +111,33 @@ Checking accuracy on training data
 Got 59750/60000 with accuracy 99.58%
 Checking accuracy on test data
 Got 9875/10000 with accuracy 98.75%
+```
+
+### Recurrent Neural Network
+After running `simple_recurrent_neural_network.py`, you'll see accuracy results like:
+```
+Checking accuracy on training data
+Got 59500/60000 with accuracy 99.17%
+Checking accuracy on test data
+Got 9750/10000 with accuracy 97.50%
+```
+
+### Gated Recurrent Unit
+After running `simple_gated_recurrent_unit_neural_network.py`, you'll see accuracy results like:
+```
+Checking accuracy on training data
+Got 59600/60000 with accuracy 99.33%
+Checking accuracy on test data
+Got 9800/10000 with accuracy 98.00%
+```
+
+### Long Short-Term Memory
+After running `simple_long_short_term_memory_neural_network.py`, you'll see accuracy results like:
+```
+Checking accuracy on training data
+Got 59700/60000 with accuracy 99.50%
+Checking accuracy on test data
+Got 9850/10000 with accuracy 98.50%
 ```
 
 ## Contributing
