@@ -1,6 +1,6 @@
 # DeepLearning
 
-This is a Python project for deep learning experiments using PyTorch. It includes implementations of various neural network architectures (fully connected, convolutional, recurrent, GRU, and LSTM) trained on the MNIST dataset for handwritten digit recognition.
+This is a Python project for deep learning experiments using PyTorch. It includes implementations of various neural network architectures (fully connected, convolutional, recurrent, GRU, and LSTM) trained on the MNIST dataset for handwritten digit recognition, as well as advanced models like sequence-to-sequence for machine translation and pre-training/fine-tuning on CIFAR-10.
 
 ## Files
 
@@ -11,6 +11,9 @@ This is a Python project for deep learning experiments using PyTorch. It include
 - `simple_long_short_term_memory_neural_network.py`: A long short-term memory (LSTM) neural network implementation with detailed comments explaining each line of code.
 - `simple_bidirectional_lstm_neural_network.py`: A bidirectional long short-term memory (BiLSTM) neural network implementation with detailed comments explaining each line of code.
 - `pytorch_loadsave.py`: A convolutional neural network implementation demonstrating model checkpoint saving and loading functionality with detailed comments explaining each line of code.
+- `sequence_to_sequence_model.py`: A sequence-to-sequence model for German to English translation using LSTM encoder-decoder architecture with detailed comments.
+- `pretrain_finetune.py`: Implementation of pre-training and fine-tuning a VGG16 model on CIFAR-10 dataset with detailed comments.
+- `utils.py`: Utility functions for saving and loading model checkpoints.
 - `.gitignore`: Ignores the dataset folder to avoid committing large data files.
 - `README.md`: This file, providing project overview and instructions.
 
@@ -77,15 +80,55 @@ The bidirectional nature allows the model to capture context from both past and 
 
 Trained using Adam optimizer and Cross-Entropy loss for 2 epochs with batch size 64.
 
+## Sequence-to-Sequence Model
+
+This implementation demonstrates a neural machine translation system using an encoder-decoder architecture with LSTM layers for German to English translation.
+
+### Architecture
+- **Encoder**: LSTM-based encoder that processes the source German sentence and produces context vectors (hidden and cell states).
+- **Decoder**: LSTM-based decoder that generates the target English sentence token by token, using the encoder's context.
+- **Sequence-to-Sequence**: Combines encoder and decoder with teacher forcing during training.
+
+### Key Components
+- Tokenization using spaCy for German and English
+- Vocabulary building with maximum size 1000 and minimum frequency 2
+- Embedding layers for both encoder and decoder
+- Dropout for regularization
+- Teacher forcing ratio of 0.5 during training
+
+Trained using Adam optimizer with weight decay and Cross-Entropy loss for 20 epochs with batch size 64. Uses TensorBoard for loss visualization and checkpoint saving.
+
+## Pre-training and Fine-tuning
+
+This implementation shows how to leverage pre-trained models for transfer learning by fine-tuning a VGG16 model (pre-trained on ImageNet) for CIFAR-10 classification.
+
+### Approach
+- Load pre-trained VGG16 model from torchvision
+- Freeze all pre-trained parameters to retain learned features
+- Replace the classifier head with a custom fully connected network (512 → 100 → 10)
+- Fine-tune only the new classifier layers on CIFAR-10
+
+### Key Features
+- Uses Identity layer to bypass avgpool for custom classifier
+- CIFAR-10 dataset with automatic download
+- Batch size 1024 for efficient training
+- Adam optimizer with learning rate 0.001
+
+Trained for 5 epochs, demonstrating transfer learning benefits for image classification tasks.
+
 ## Requirements
 
 - Python 3.x
 - PyTorch (CPU or GPU version)
-- torchvision (for MNIST dataset)
+- torchvision (for MNIST and CIFAR-10 datasets)
+- torchtext (for sequence-to-sequence model)
+- spaCy with German and English models (for tokenization)
 
 Install dependencies:
 ```bash
-pip install torch torchvision
+pip install torch torchvision torchtext spacy
+python -m spacy download de
+python -m spacy download en
 ```
 
 ## Usage
@@ -105,12 +148,14 @@ python simple_recurrent_neural_network.py
 python simple_gated_recurrent_unit_neural_network.py
 python simple_long_short_term_memory_neural_network.py
 python simple_bidirectional_lstm_neural_network.py
+python sequence_to_sequence_model.py
+python pretrain_finetune.py
 ```
 
 Each script will:
-- Download the MNIST dataset automatically
+- Download the required datasets automatically (MNIST, Multi30k, CIFAR-10)
 - Train the respective model
-- Evaluate accuracy on training and test sets
+- Evaluate accuracy on training and test sets (where applicable)
 
 ## Dataset
 
@@ -182,6 +227,26 @@ Got 59800/60000 with accuracy 99.67%
 Checking accuracy on test data
 Got 9870/10000 with accuracy 98.70%
 ```
+
+### Sequence-to-Sequence Model
+After running `sequence_to_sequence_model.py`, you'll see training progress and checkpoint saving:
+```
+=> Saving checkpoint...
+For epoch 0 / 20
+For epoch 1 / 20
+...
+```
+The model trains for German to English translation using the Multi30k dataset. Loss is logged to TensorBoard in the `runs/loss_plot` directory.
+
+### Pre-training and Fine-tuning
+After running `pretrain_finetune.py`, you'll see accuracy results on CIFAR-10:
+```
+Checking accuracy on training data
+Got X/50000 with accuracy XX.XX%
+Checking accuracy on test data
+Got Y/10000 with accuracy YY.YY%
+```
+The pre-trained VGG16 model is fine-tuned for CIFAR-10 classification, demonstrating transfer learning.
 
 ## Contributing
 
